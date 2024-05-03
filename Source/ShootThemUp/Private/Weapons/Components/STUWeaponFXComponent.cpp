@@ -34,7 +34,7 @@ void USTUWeaponFXComponent::PlayImpactFX(const FHitResult& Hit)
         ImpactData.DecalData.Material,                 //
         ImpactData.DecalData.Size,                     //
         Hit.ImpactPoint,                               //
-        Hit.ImpactNormal.Rotation());
+        (Hit.ImpactNormal * -1.0f).Rotation());
 
     if (DecalComponent)
     {

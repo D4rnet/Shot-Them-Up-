@@ -6,6 +6,8 @@
 #include "DrawDebugHelpers.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All);
 
@@ -137,10 +139,10 @@ bool ASTUBaseWeapon::IsAmmoFull() const
            CurrentAmmo.Bullets == DefaultAmmo.Bullets;
 }
 
-bool ASTUBaseWeapon::TryToAddAmmo(int32 ClipsAmount) 
+bool ASTUBaseWeapon::TryToAddAmmo(int32 ClipsAmount)
 {
     if (CurrentAmmo.Infinite || IsAmmoFull() || ClipsAmount <= 0) return false;
-    
+
     if (IsAmmoEmpty())
     {
         CurrentAmmo.Clips = FMath::Clamp(ClipsAmount, 0, DefaultAmmo.Clips + 1);
@@ -165,4 +167,15 @@ bool ASTUBaseWeapon::TryToAddAmmo(int32 ClipsAmount)
     }
 
     return true;
+}
+
+UNiagaraComponent* ASTUBaseWeapon::SpawnMuzzleFX()
+{
+    return UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleFX, //
+        WeaponMesh,                                               //
+        MuzzleSocketName,                                         //
+        FVector::ZeroVector,                                      //
+        FRotator::ZeroRotator,                                    //
+        EAttachLocation::SnapToTarget,                            //
+        true);
 }
