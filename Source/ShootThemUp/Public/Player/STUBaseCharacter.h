@@ -20,7 +20,7 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     GENERATED_BODY()
 
 public:
-    ASTUBaseCharacter(const FObjectInitializer& ObjUnit);
+    ASTUBaseCharacter(const FObjectInitializer& ObjInit);
 
     FOnCharacterRunSignature OnCharacterRun;
 
@@ -56,6 +56,7 @@ protected:
     FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
 
     virtual void BeginPlay() override;
+    virtual void OnDeath();
 
 public:
     virtual void Tick(float DeltaTime) override;
@@ -78,7 +79,6 @@ private:
     void StartRun();
     void EndRun();
 
-    void OnDeath();
     void OnHealthChanged(float Health, float HealthDelta);
 
     UFUNCTION()
